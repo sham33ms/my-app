@@ -1,0 +1,64 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  padding: 12px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-left: 0;
+    
+}
+
+.home {
+  display: flex;
+  gap: 30px;
+  padding-left: 2%;
+}
+
+.home a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+/* Highlight active page */
+.home a.active {
+  background-color: #0056b3;  /* Darker blue for active state */
+  color: #f8f9fa;
+  font-weight: bold;
+}
+
+/* Hover effect */
+.home a:hover {
+  color: #f8f9fa;
+  text-decoration: underline  ;
+  transition: color 0.3s ;
+}
+
+.log {
+  display: flex;
+  padding-right: 2%;
+}
+
+.log button {
+  background: #dc3545;
+  border: none;
+  padding: 8px 15px;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.log button:hover {
+  background: #090710;
+}
