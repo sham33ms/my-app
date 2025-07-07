@@ -24,10 +24,10 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Check if user exists with given phone and password
+        
         $user = User::where([
             'phone' => $request->phone,
-            'password' => $request->password  // No hashing, directly checking
+            'password' => $request->password
         ])->first();
 
         if (!$user) {

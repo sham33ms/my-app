@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import "./ProductList.css";
-// import "../style.css"
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -10,6 +9,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 const ProductList = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
@@ -29,8 +29,8 @@ const ProductList = () => {
         method: "GET",
         headers: {
           "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+          "Authorization": `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -50,38 +50,52 @@ const ProductList = () => {
     fetchProducts(currentPage);
   }, [currentPage]);
 
-  //Navigate handler
+  useEffect(() => {
+    const page = Number(searchParams.get("page")) || 1;
+    if (page !== currentPage) {
+      setCurrentPage(page);
+    }
+  }, [searchParams]);
+
+  // Navigate handlers
   const prevPageHandler = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      navigate(`?page=${newPage}`);
+    }
   };
 
   const nextPageHandler = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      navigate(`?page=${newPage}`);
+    }
   };
 
   // Delete Product
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
-  
+
     const token = localStorage.getItem("token");
-  
+
     try {
       const response = await fetch(`http://localhost:8000/api/products/${id}`, {
         method: "DELETE",
         headers: {
           "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+          "Authorization": `Bearer ${token}`,
+        },
       });
-  
+
       if (response.ok) {
         alert("Product deleted successfully!");
-  
-        // Check if the deleted product is the last one on the page
         if (products.length === 1 && currentPage > 1) {
-          setCurrentPage(currentPage - 1); // Navigate to the previous page
+          setCurrentPage(currentPage - 1);
+          navigate(`?page=${currentPage - 1}`);
         } else {
-          fetchProducts(currentPage); // Refresh the current page
+          fetchProducts(currentPage);
         }
       } else {
         const data = await response.json();
@@ -91,8 +105,8 @@ const ProductList = () => {
       console.error("Error deleting product:", error);
     }
   };
-  
-  // Update Product 
+
+  // Update Product
   const handleSaveEdit = async (updatedProduct) => {
     const token = localStorage.getItem("token");
 
@@ -102,9 +116,9 @@ const ProductList = () => {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedProduct)
+        body: JSON.stringify(updatedProduct),
       });
 
       if (response.ok) {
@@ -124,29 +138,19 @@ const ProductList = () => {
     }
   };
 
-  // const prevPageHandler = () => {
-  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
-  // };
-
-  // const nextPageHandler = () => {
-  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  // };
-
   return (
     <>
       <Link to="/" className="btn">Add Product</Link>
       <div className="product-list">
-      <h2 className="title" style={{ textAlign: "center" }}>List of Products</h2>
-
-
+        <h2 className="title" style={{ textAlign: "center" }}>List of Products</h2>
         <div className="table-container">
           <table className="styled-table">
             <thead>
               <tr>
-                <th style={{ width: "200px"}}>Name</th>
-                <th style={{ width: "200px"}}>Category</th>
-                <th style={{ width: "200px"}}>Price</th>
-                <th style={{ width: "200px"}}>Action</th>
+                <th style={{ width: "200px" }}>Name</th>
+                <th style={{ width: "200px" }}>Category</th>
+                <th style={{ width: "200px" }}>Price</th>
+                <th style={{ width: "200px" }}>Action</th>
               </tr>
             </thead>
             <tbody>

@@ -7,17 +7,23 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    
     public function list(Request $request)
-    {
-        // $perPage = 5; // Default items per page
-        $products = Product::orderBy('id', 'desc')->paginate(5);
+{
+    $user = auth()->user();
 
+    $products = Product::where('user_id', $user->id)
+                       ->orderBy('id', 'desc')
+                       ->paginate(5);
 
-        return response()->json($products);
-    }
+    return response()->json($products);
+}
 
+    // Create a new product
     public function create(Request $request)
     {
+        $user = auth()->user(); 
+
         $request->validate([
             'product_name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
@@ -27,7 +33,8 @@ class ProductController extends Controller
         $product = Product::create([
             'product_name' => $request->product_name,
             'category' => $request->category,
-            'price' => $request->price
+            'price' => $request->price,
+            'user_id' => $user->id 
         ]);
 
         return response()->json([
@@ -36,12 +43,14 @@ class ProductController extends Controller
         ], 201);
     }
 
+    // Update a product 
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
+        $user = auth()->user();
+        $product = Product::where('id', $id)->where('user_id', $user->id)->first();
 
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['message' => 'Product not found or unauthorized'], 404);
         }
 
         $request->validate([
@@ -62,17 +71,18 @@ class ProductController extends Controller
         ], 200);
     }
 
+    // Delete a product 
     public function delete($id)
     {
-        $product = Product::find($id);
+        $user = auth()->user();
+        $product = Product::where('id', $id)->where('user_id', $user->id)->first();
 
         if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['message' => 'Product not found or unauthorized'], 404);
         }
 
         $product->delete();
 
         return response()->json(['message' => 'Product deleted successfully'], 200);
     }
-
 }

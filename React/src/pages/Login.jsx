@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 
-// import { toast } from "react-toastify";
-
-// toast.configure();
-
 const Login = () => {
   // const [phone, setPhone] = useState("");
   // const [code, setCode] = useState("");
   const [error, setError] = useState(null);
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,7 +55,7 @@ const Login = () => {
   async function handleSubmit(formData) {
     const phone = formData.get("phone");
     const password = formData.get("password");
-    
+
     // if (phone.length !== 10 || password.length !== 4) {
     //   alert("Enter valid phone number (10 digits) and code (4 digits).");
     //   return null;
@@ -72,7 +70,7 @@ const Login = () => {
         body: JSON.stringify({ phone, password }),
       });
       const data = await response.json();
-      setError(data?.messages?.phone?.[0] || data?.message);
+      // setError(data?.messages?.phone?.[0] || data?.message);
 
       if (response.ok) {
         alert("Login successful!");
@@ -81,6 +79,7 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error, "error-login");
+      alert("Enter valid credentials")
     }
   }
 
@@ -96,7 +95,7 @@ const Login = () => {
           placeholder="Phone Number"
           // value={phone}
           maxLength={10}
-          // onChange={(e) => setPhone(e.target.value)}
+        // onChange={(e) => setPhone(e.target.value)}
         />
         <input
           type="password"
@@ -104,7 +103,7 @@ const Login = () => {
           placeholder="Code"
           // value={code}
           maxLength={4}
-          // onChange={(e) => setCode(e.target.value)}
+        // onChange={(e) => setCode(e.target.value)}
         />
         <button type="submit">Login</button>
       </form>

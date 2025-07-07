@@ -6,8 +6,8 @@ const Navbar = () => {
   const location = useLocation(); // Get current path
 
   const handleLogout = () => {
-    localStorage.removeItem("token");  // ✅ Remove JWT token
-    // window.location.href = "/login";   // 🔄 Redirect to login page
+    localStorage.removeItem("token");  //  Remove JWT token
+    // window.location.href = "/login";   //  Redirect to login page
     navigate("/login"); // Redirect to login page
   };
   

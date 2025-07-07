@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/ProductCreate";
 import ProductList from "./pages/ProductList";
 import SharedLayout from "./components/SharedLayout";
 import ProductCreate from "./pages/ProductCreate";

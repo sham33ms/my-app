@@ -32,7 +32,7 @@ const ProductCreate = () => {
     }
 
     try {
-     
+
 
       const response = await fetch("http://localhost:8000/api/product/create", {
         method: "POST",
@@ -61,9 +61,11 @@ const ProductCreate = () => {
         <h2>Create Product</h2>
         {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
         <form action={handleSubmit} id="product-form" className="product-form">
-          <input type="text" name="product_name" placeholder="Product Name" /> <br />
-          <input type="text" name="category" placeholder="Category" /> <br />
-          <input type="number" name="price" placeholder="Price" /> <br />
+          <input type="text"
+            name="product_name"
+            placeholder="Product Name" /> <br />
+          <input type="text" name="category" placeholder="Product Category" /> <br />
+          <input type="number" name="price" placeholder="Product Price" /> <br />
           <button type="submit">Create Product</button>
         </form>
       </div>
